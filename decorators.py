@@ -1,8 +1,8 @@
 from database import create_connection
-from functools import wraps  # Importamos wraps para mantener el nombre de la función original
+from functools import wraps
 
 def db_connection(func):
-    @wraps(func)  # Esto evita el problema del nombre en Flask
+    @wraps(func)
     def wrapper(*args, **kwargs):
         connection = create_connection()
         if not connection:
@@ -10,7 +10,7 @@ def db_connection(func):
 
         cursor = connection.cursor()
         try:
-            result = func(cursor, *args, **kwargs)  # Llamamos a la función original con `cursor`
+            result = func(cursor, *args, **kwargs)
             connection.commit()
             return result
         except Exception as e:
