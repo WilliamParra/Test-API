@@ -1,12 +1,14 @@
-from database import create_connection
 from functools import wraps
+from database import Database
+from flask import jsonify
+
 
 def db_connection(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        connection = create_connection()
+        connection = Database.create_connection()
         if not connection:
-            return {"error": "No se pudo conectar a la base de datos"}, 500
+            return jsonify({"error": "Database connection failed"}), 500
 
         cursor = connection.cursor()
         try:
